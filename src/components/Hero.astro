@@ -1,16 +1,34 @@
 ---
 import Botao from '@/components/ui/Botao.astro';
 import Pattern from '@/components/ui/Pattern.astro';
+import Traco from '@/components/ui/Traco.astro';
+import { Picture } from 'astro:assets';
+import { photo } from '@/lib/photos';
+const foto = photo('hero-mao-no-queixo.jpg');
 ---
 <section id="hero" data-surface="preto" class="hero" aria-label="Apresentação">
   <Pattern kind="grid" opacity={0.08} />
+  {foto && (
+    <figure class="hero-foto">
+      <Picture
+        src={foto}
+        alt="Vitor Pleins, fundador da VOLGUS, retrato em preto e branco, sorrindo com a mão no queixo"
+        widths={[480, 768, 1200, 1800]}
+        sizes="(min-width: 1024px) 52vw, 100vw"
+        formats={['avif', 'webp']}
+        loading="eager"
+        fetchpriority="high"
+        decoding="async"
+      />
+    </figure>
+  )}
   <span class="secao-label" aria-hidden="true">§ 01</span>
   <div class="container hero-inner">
     <h1 class="hero-title t-display t-mega">
       <span class="hero-line"><span>Você não tem</span></span>
       <span class="hero-line"><span>problema de venda.</span></span>
       <span class="hero-line"><span>Você tem problema</span></span>
-      <span class="hero-line"><span>de <em class="hero-chave">previsibilidade.</em></span></span>
+      <span class="hero-line"><span>de <em class="hero-chave">previsibilidade.<Traco id="hero" class="hero-traco" /></em></span></span>
     </h1>
     <p class="hero-sub prose">
       A VOLGUS entra no comercial da sua empresa e constrói a estrutura que faz a venda acontecer sem depender de você.
@@ -26,15 +44,32 @@ import Pattern from '@/components/ui/Pattern.astro';
   .hero { position: relative; min-height: 100svh; display: flex; align-items: flex-end; padding-block: 8rem 5rem; overflow: clip; }
   .hero .secao-label { top: 8rem; }
   .hero-inner { position: relative; display: grid; gap: 2.5rem; }
-  .hero-title { text-transform: uppercase; font-variation-settings: "opsz" 96, "wdth" 82; max-width: 12ch; }
-  .hero-line { display: block; overflow: clip; }
+  .hero-foto { position: absolute; margin: 0; inset: 0 0 0 auto; width: min(58vw, 62rem); pointer-events: none; }
+  .hero-foto :global(img) {
+    width: 100%; height: 100%; object-fit: cover; object-position: center top;
+    filter: grayscale(1) contrast(1.18) brightness(0.9);
+    -webkit-mask-image: linear-gradient(to right, transparent 0%, #000 34%), linear-gradient(to bottom, #000 70%, transparent 100%);
+    mask-image: linear-gradient(to right, transparent 0%, #000 34%), linear-gradient(to bottom, #000 70%, transparent 100%);
+    -webkit-mask-composite: source-in; mask-composite: intersect;
+  }
+  @media (max-width: 1023px) {
+    .hero-foto { position: relative; width: 100%; inset: auto; order: 2; height: 60vh; margin-inline: calc(-1 * var(--gutter)); width: calc(100% + 2 * var(--gutter)); }
+    .hero-foto :global(img) { -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 25%, #000 80%, transparent 100%); mask-image: linear-gradient(to bottom, transparent 0, #000 25%, #000 80%, transparent 100%); }
+  }
+  .hero-title { text-transform: uppercase; font-variation-settings: "opsz" 96, "wdth" 80; }
+  .hero-line { display: block; }
   .hero-line > span { display: block; }
   .hero-chave { font-style: normal; position: relative; white-space: nowrap; }
+  .hero-traco { position: absolute; color: #baff00; pointer-events: none; left: 84%; bottom: -42%; width: 33%; transform: rotate(-4deg); }
+  @media (max-width: 767px) { .hero-traco { left: 72%; width: 36%; bottom: -34%; } }
+  /* JS present: lines start hidden and the entrance reveals them. No JS: everything is visible. */
+  :global(html.motion) .hero-line > span { clip-path: inset(0 0 100% 0); }
+  :global(html.motion) .hero-sub, :global(html.motion) .hero-ctas { opacity: 0; }
   .hero-sub { font-size: var(--text-corpo); max-width: 44ch; color: var(--ink-2); }
   .hero-ctas { display: flex; flex-wrap: wrap; align-items: flex-start; gap: 2rem 3rem; }
   @media (min-width: 1024px) {
     .hero-inner { grid-template-columns: repeat(12, minmax(0, 1fr)); }
-    .hero-title { grid-column: 1 / 11; }
+    .hero-title { grid-column: 1 / 13; }
     .hero-sub { grid-column: 1 / 7; }
     .hero-ctas { grid-column: 1 / 12; }
   }

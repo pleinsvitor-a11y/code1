@@ -1,0 +1,44 @@
+---
+/** Thin custom cursor. Desktop with a fine pointer only; grows and turns lime over interactive elements. */
+---
+<div class="cursor" data-cursor aria-hidden="true"></div>
+
+<style>
+  .cursor { display: none; }
+  @media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+    :global(html.motion) { cursor: none; }
+    :global(html.motion) a, :global(html.motion) button, :global(html.motion) [role="button"], :global(html.motion) input, :global(html.motion) label { cursor: none; }
+    :global(html.motion) .cursor {
+      display: block; position: fixed; top: 0; left: 0; z-index: 9999; pointer-events: none;
+      width: 8px; height: 8px; margin: -4px 0 0 -4px; border-radius: 50%;
+      background: #ffffff; mix-blend-mode: difference;
+      transform: translate3d(var(--cx, -100px), var(--cy, -100px), 0) scale(var(--cs, 1));
+      transition: transform 120ms cubic-bezier(.22,1,.36,1), background-color 160ms;
+      will-change: transform;
+    }
+    :global(html.motion) .cursor.is-over { background: #baff00; mix-blend-mode: normal; --cs: 5; }
+    :global(html.motion) .cursor.is-hidden { opacity: 0; }
+  }
+</style>
+
+<script>
+  const el = document.querySelector<HTMLElement>('[data-cursor]');
+  const ok = window.matchMedia('(hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)').matches;
+  if (el && ok) {
+    const target = { x: 0, y: 0 };
+    let raf = 0;
+    const paint = () => {
+      el.style.setProperty('--cx', `${target.x}px`);
+      el.style.setProperty('--cy', `${target.y}px`);
+      raf = 0;
+    };
+    window.addEventListener('pointermove', (e) => {
+      target.x = e.clientX; target.y = e.clientY;
+      if (!raf) raf = requestAnimationFrame(paint);
+      const over = (e.target as Element | null)?.closest('a, button, [role="button"], input, select, textarea, label, [data-marquee]');
+      el.classList.toggle('is-over', !!over);
+    }, { passive: true });
+    document.addEventListener('mouseleave', () => el.classList.add('is-hidden'));
+    document.addEventListener('mouseenter', () => el.classList.remove('is-hidden'));
+  }
+</script>

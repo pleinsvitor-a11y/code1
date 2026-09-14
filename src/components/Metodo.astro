@@ -74,4 +74,10 @@ const etapas = [
     }
     .metodo-txt { grid-column: 1; font-size: 1rem; }
   }
+  /* Pinned sequence (desktop, capable devices): steps light up in order */
+  :global(html.motion) .is-pinned .metodo-etapa { opacity: 0.22; transition: opacity 420ms var(--ease-out-expo); }
+  :global(html.motion) .is-pinned .metodo-etapa.is-active { opacity: 1; }
+  :global(html.motion) .is-pinned .metodo-marca { transition: background-color 300ms, color 300ms; }
+  :global(html.motion) .is-pinned .metodo-marca.is-active { background: #000000; color: #baff00; box-shadow: none; }
+  :global(html.motion) .is-pinned .metodo-regua-fill { transform: scaleX(0); }
 </style>

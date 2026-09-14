@@ -1,13 +1,21 @@
 ---
 /**
  * The calligraphic stroke — the real MIV symbol, revealed as if handwritten.
- * Static in this phase; motion.ts animates the mask stroke (data-traco).
+ * The fill sits under a mask made of two centerline strokes; motion.ts animates
+ * their dash offset (loop first, then the V). Without JS or with reduced motion
+ * the mask is complete and the glyph is simply there.
  */
-import { SIMBOLO_D, SIMBOLO_TRANSLATE, SIMBOLO_VIEWBOX } from '@/lib/brand-paths';
-interface Props {
-  [key: string]: unknown; class?: string; id: string }
+import { SIMBOLO_D, SIMBOLO_TRANSLATE, SIMBOLO_VIEWBOX, TRACO_A, TRACO_B, TRACO_STROKE } from '@/lib/brand-paths';
+interface Props { [key: string]: unknown; class?: string; id: string }
 const { class: className = '', id, ...rest } = Astro.props;
+const maskId = `traco-mask-${id}`;
 ---
-<svg class={`traco ${className}`} {...rest} viewBox={SIMBOLO_VIEWBOX} xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" data-traco={id} overflow="visible">
-  <path class="traco-fill" transform={`translate(${SIMBOLO_TRANSLATE})`} fill="currentColor" d={SIMBOLO_D} />
+<svg class={`traco ${className}`} viewBox={SIMBOLO_VIEWBOX} xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" data-traco={id} overflow="visible" {...rest}>
+  <defs>
+    <mask id={maskId} maskUnits="userSpaceOnUse" x="-10" y="-10" width="130" height="100">
+      <path data-traco-a d={TRACO_A} fill="none" stroke="#fff" stroke-width={TRACO_STROKE} stroke-linecap="round" stroke-linejoin="round" />
+      <path data-traco-b d={TRACO_B} fill="none" stroke="#fff" stroke-width={TRACO_STROKE} stroke-linecap="round" stroke-linejoin="round" />
+    </mask>
+  </defs>
+  <path class="traco-fill" data-mask={`url(#${maskId})`} transform={`translate(${SIMBOLO_TRANSLATE})`} fill="currentColor" d={SIMBOLO_D} />
 </svg>

@@ -1,5 +1,5 @@
 ---
-import { Image } from 'astro:assets';
+import { Picture } from 'astro:assets';
 import { photo } from '@/lib/photos';
 const foto = photo('vitor-sentado.jpg');
 const numeros = [
@@ -13,7 +13,7 @@ const numeros = [
   <div class="container vitor-inner">
     <figure class="vitor-foto" aria-hidden={foto ? undefined : 'true'}>
       {foto && (
-        <Image
+        <Picture
           src={foto}
           alt="Vitor Pleins sentado, sorrindo, de blazer escuro e camisa branca, com as mãos entrelaçadas"
           widths={[480, 768, 1200, 1800]}
@@ -21,6 +21,7 @@ const numeros = [
           formats={['avif', 'webp']}
           loading="lazy"
           decoding="async"
+          pictureAttributes={{ class: 'vitor-picture' }}
         />
       )}
     </figure>

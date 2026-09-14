@@ -1,0 +1,35 @@
+---
+import { SITE } from '@/config/site';
+const org = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'Organization',
+      '@id': `${SITE.domain}/#org`,
+      name: 'VOLGUS',
+      url: SITE.domain,
+      logo: `${SITE.domain}/brand/icon-512.png`,
+      email: SITE.email,
+      founder: { '@type': 'Person', name: SITE.founder, sameAs: [SITE.instagramPessoal] },
+      sameAs: [SITE.instagramMarca, SITE.instagramPessoal],
+      address: { '@type': 'PostalAddress', addressLocality: 'Maringá', addressRegion: 'PR', addressCountry: 'BR' },
+    },
+    {
+      '@type': 'ProfessionalService',
+      '@id': `${SITE.domain}/#service`,
+      name: 'VOLGUS — Estruturação e gestão comercial',
+      description: SITE.description,
+      url: SITE.domain,
+      image: `${SITE.domain}/og/volgus.png`,
+      telephone: `+${SITE.whatsapp}`,
+      email: SITE.email,
+      founder: { '@type': 'Person', name: SITE.founder },
+      parentOrganization: { '@id': `${SITE.domain}/#org` },
+      areaServed: { '@type': 'Country', name: 'Brasil' },
+      address: { '@type': 'PostalAddress', addressLocality: 'Maringá', addressRegion: 'PR', addressCountry: 'BR' },
+      serviceType: 'Consultoria de estruturação e gestão comercial para PMEs',
+    },
+  ],
+};
+---
+<script type="application/ld+json" is:inline set:html={JSON.stringify(org)} />

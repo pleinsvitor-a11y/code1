@@ -1,6 +1,11 @@
 ---
 import Pattern from '@/components/ui/Pattern.astro';
+import { existsSync } from 'node:fs';
 const passos = ['ICP', 'Funil', 'Scripts', 'CRM'];
+// TODO(video): generate public/video/loop.mp4, loop.webm and poster.jpg with scripts/prepare-media.sh.
+// Until then the section renders without the video panel. See docs/DEPLOY.md.
+const video = existsSync('public/video/loop.mp4') && existsSync('public/video/poster.jpg');
+const webm = existsSync('public/video/loop.webm');
 ---
 <section id="ordem" data-surface="branco" class="secao ordem" aria-labelledby="ordem-titulo">
   <span class="secao-label" aria-hidden="true">§ 05</span>
@@ -25,6 +30,15 @@ const passos = ['ICP', 'Funil', 'Scripts', 'CRM'];
     </ol>
 
     <p class="ordem-fecho">A VOLGUS nunca vende CRM. Instala o processo que torna o CRM útil.</p>
+
+    {video && (
+      <div class="ordem-video">
+        <video autoplay muted loop playsinline preload="none" poster="/video/poster.jpg" aria-hidden="true" tabindex="-1">
+          {webm && <source src="/video/loop.webm" type="video/webm" />}
+          <source src="/video/loop.mp4" type="video/mp4" />
+        </video>
+      </div>
+    )}
   </div>
 </section>
 
@@ -58,4 +72,7 @@ const passos = ['ICP', 'Funil', 'Scripts', 'CRM'];
     .ordem-seta::before { height: 1px; width: auto; }
     .ordem-seta-ponta { transform: none; }
   }
+  .ordem-video { margin-top: clamp(3rem, 6vw, 5rem); aspect-ratio: 16 / 9; max-width: 56rem; overflow: hidden; background: #000000; }
+  .ordem-video video { width: 100%; height: 100%; object-fit: cover; filter: grayscale(1); }
+  @media (prefers-reduced-motion: reduce) { .ordem-video video { display: none; } .ordem-video { background: #000 url('/video/poster.jpg') center / cover; } }
 </style>

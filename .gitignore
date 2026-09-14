@@ -5,3 +5,5 @@ dist/
 *.log
 .env
 .env.*
+public/video/_source/*
+!public/video/_source/README.md
