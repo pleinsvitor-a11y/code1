@@ -1,0 +1,9 @@
+---
+/** The VOLGUS wordmark, from the page sprite. */
+interface Props { [key: string]: unknown; class?: string }
+import { WORDMARK_VIEWBOX } from '@/lib/brand-paths';
+const { class: className = '', ...rest } = Astro.props;
+---
+<svg class={className} viewBox={WORDMARK_VIEWBOX} xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" {...rest}>
+  <use href="#volgus-wordmark" />
+</svg>

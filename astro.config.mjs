@@ -7,7 +7,7 @@ export default defineConfig({
   site: 'https://www.volgus.com.br',
   output: 'static',
   trailingSlash: 'ignore',
-  build: { inlineStylesheets: 'auto', assets: 'assets' },
+  build: { inlineStylesheets: 'always', assets: 'assets' },
   integrations: [react()],
   vite: { plugins: [tailwindcss()] },
   image: { service: { entrypoint: 'astro/assets/services/sharp' } },

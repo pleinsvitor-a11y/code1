@@ -13,7 +13,12 @@ import Traco from '@/components/ui/Traco.astro';
 </section>
 
 <style>
-  .ctafinal { overflow: clip; background: #baff00; color: #000000; }
+  .ctafinal {
+    overflow: clip;
+    /* This section paints itself, so it owns its ink too. */
+    --ink: #000000; --ink-2: #000000; --linha: rgb(0 0 0 / 0.22);
+    background: #baff00; color: var(--ink);
+  }
   .ctafinal-inner { position: relative; display: grid; gap: 2rem; max-width: 40rem; }
   .ctafinal-titulo { max-width: 12ch; font-variation-settings: "opsz" 96, "wdth" 82; }
   .ctafinal-texto { max-width: 40ch; }

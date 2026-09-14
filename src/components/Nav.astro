@@ -1,5 +1,6 @@
 ---
 import Simbolo from '@/components/ui/Simbolo.astro';
+import Wordmark from '@/components/ui/Wordmark.astro';
 interface Props { minimal?: boolean }
 const { minimal = false } = Astro.props;
 const links = [
@@ -12,7 +13,7 @@ const links = [
   <div class="container nav-inner">
     <a href="/" class="nav-logo" aria-label="VOLGUS — início">
       <Simbolo class="nav-simbolo mark-simbolo" />
-      <svg class="nav-wordmark mark-wordmark" viewBox="0 0 246 45" aria-hidden="true" focusable="false"><use href="/brand/wordmark.svg#wordmark" /></svg>
+      <Wordmark class="nav-wordmark mark-wordmark" />
     </a>
     {!minimal && (
       <nav class="nav-links" aria-label="Seções">
@@ -35,9 +36,13 @@ const links = [
   .nav.is-compact { height: 3.25rem; }
   .nav-inner { display: flex; align-items: center; justify-content: space-between; height: 100%; gap: 1rem; }
   .nav-inner > * { pointer-events: auto; }
+  /* The nav floats over whatever section is under it, so it takes the body's
+     current ink. (mix-blend-mode was the first idea, but a fixed, z-indexed
+     header is its own stacking context: the blend had nothing to work against
+     and the logo washed out on the light sections.) */
   .nav-logo {
     display: flex; align-items: center; gap: 0.5rem;
-    color: #ffffff; mix-blend-mode: difference;
+    color: var(--ink);
     height: 1.75rem;
   }
   .nav-simbolo { height: 1.75rem; }
@@ -45,7 +50,7 @@ const links = [
   .nav-links {
     display: none; gap: 2.25rem;
     font-size: 0.9375rem; font-weight: 500;
-    color: #ffffff; mix-blend-mode: difference;
+    color: var(--ink);
   }
   .nav-links a { opacity: 0.72; transition: opacity 160ms; }
   .nav-links a:hover { opacity: 1; }
@@ -65,7 +70,7 @@ const links = [
   :global([data-mode="claro"]) .nav-cta:hover, :global([data-mode="branco"]) .nav-cta:hover, :global([data-mode="lime"]) .nav-cta:hover {
     background: #383838; color: #ffffff;
   }
-  :global([data-mode="lime"]) .nav-logo, :global([data-mode="lime"]) .nav-links { mix-blend-mode: normal; color: #000000; }
+  :global([data-mode="lime"]) .nav-logo, :global([data-mode="lime"]) .nav-links { color: #000000; }
 </style>
 
 <script>

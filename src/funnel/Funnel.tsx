@@ -9,7 +9,7 @@ import { Text } from './screens/Text';
 import { Contact } from './screens/Contact';
 import { Processing } from './screens/Processing';
 import { Result } from './screens/Result';
-import { SIMBOLO_D, SIMBOLO_TRANSLATE, SIMBOLO_VIEWBOX } from '@/lib/brand-paths';
+import { SIMBOLO_VIEWBOX, WORDMARK_VIEWBOX } from '@/lib/brand-paths';
 import './funnel.css';
 
 const STEP_PROCESSING = TOTAL_STEPS + 1;
@@ -80,8 +80,8 @@ export default function Funnel() {
       </div>
       <header className="fx-top">
         <a href="/" className="fx-logo" aria-label="VOLGUS — voltar para o início">
-          <svg className="fx-logo-simbolo" viewBox={SIMBOLO_VIEWBOX} aria-hidden="true"><path transform={`translate(${SIMBOLO_TRANSLATE})`} fill="currentColor" d={SIMBOLO_D} /></svg>
-          <svg viewBox="0 0 246 45" aria-hidden="true" style={{ height: '0.95rem' }}><use href="/brand/wordmark.svg#wordmark" /></svg>
+          <svg className="fx-logo-simbolo" viewBox={SIMBOLO_VIEWBOX} aria-hidden="true"><use href="#volgus-simbolo" /></svg>
+          <svg viewBox={WORDMARK_VIEWBOX} aria-hidden="true" style={{ height: '0.95rem' }}><use href="#volgus-wordmark" /></svg>
         </a>
         {q && <span className="fx-count" aria-live="polite">{step} / {TOTAL_STEPS}</span>}
       </header>

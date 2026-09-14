@@ -60,11 +60,19 @@ const foto = photo('hero-mao-no-queixo.jpg');
   .hero-line { display: block; }
   .hero-line > span { display: block; }
   .hero-chave { font-style: normal; position: relative; white-space: nowrap; }
-  .hero-traco { position: absolute; color: #baff00; pointer-events: none; left: 84%; bottom: -42%; width: 33%; transform: rotate(-4deg); }
-  @media (max-width: 767px) { .hero-traco { left: 72%; width: 36%; bottom: -34%; } }
-  /* JS present: lines start hidden and the entrance reveals them. No JS: everything is visible. */
-  :global(html.motion) .hero-line > span { clip-path: inset(0 0 100% 0); }
-  :global(html.motion) .hero-sub, :global(html.motion) .hero-ctas { opacity: 0; }
+  .hero-traco { position: absolute; color: #baff00; pointer-events: none; left: 68%; bottom: -40%; width: 34%; transform: rotate(-4deg); }
+  @media (max-width: 767px) { .hero-traco { left: 60%; width: 40%; bottom: -36%; } }
+  /* Entrance: one orchestrated sequence in pure CSS, so it starts on first paint and never waits for JS.
+     No JS: everything is simply visible. Reduced motion: the global rule collapses the durations. */
+  :global(html.js) .hero-line > span { animation: hero-line 520ms var(--ease-out-expo) both; }
+  :global(html.js) .hero-line:nth-child(2) > span { animation-delay: 80ms; }
+  :global(html.js) .hero-line:nth-child(3) > span { animation-delay: 160ms; }
+  :global(html.js) .hero-line:nth-child(4) > span { animation-delay: 240ms; }
+  :global(html.js) .hero-sub, :global(html.js) .hero-ctas { animation: hero-fade 150ms linear 520ms both; }
+  :global(html.js) .hero-traco { opacity: 0; }
+  :global(html.motion) .hero-traco { opacity: 1; }
+  @keyframes hero-line { from { clip-path: inset(-0.15em 0 100% 0); transform: translateY(0.35em); } to { clip-path: inset(-0.15em 0 -0.15em 0); transform: none; } }
+  @keyframes hero-fade { from { opacity: 0; } to { opacity: 1; } }
   .hero-sub { font-size: var(--text-corpo); max-width: 44ch; color: var(--ink-2); }
   .hero-ctas { display: flex; flex-wrap: wrap; align-items: flex-start; gap: 2rem 3rem; }
   @media (min-width: 1024px) {

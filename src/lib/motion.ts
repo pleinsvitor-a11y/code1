@@ -93,15 +93,15 @@ function initSurface(): void {
 function initHero(): void {
   const hero = document.querySelector<HTMLElement>('#hero');
   if (!hero) return;
-  const lines = hero.querySelectorAll<HTMLElement>('.hero-line > span');
-  const rest = hero.querySelectorAll<HTMLElement>('.hero-sub, .hero-ctas');
   const title = hero.querySelector<HTMLElement>('.hero-title');
   const traco = hero.querySelector<SVGSVGElement>('[data-traco="hero"]');
 
-  const tl = gsap.timeline({ defaults: { ease: 'expo.out' } });
-  tl.fromTo(lines, { clipPath: 'inset(-0.15em 0 100% 0)', y: '0.35em' }, { clipPath: 'inset(-0.15em 0 -0.05em 0)', y: 0, duration: 0.42, stagger: 0.07, onComplete: () => lines.forEach((l) => { l.style.clipPath = 'none'; }) }, 0.05)
-    .fromTo(rest, { opacity: 0 }, { opacity: 1, duration: 0.15, ease: 'none' }, 0.5);
-  if (traco) tl.add(drawTraco(traco, 0.6), 0.62);
+  // The line reveal is CSS (see Hero.astro). The stroke is written last, once the lines are in.
+  if (traco) {
+    const elapsed = performance.now();
+    const delay = Math.max(0, 0.7 - elapsed / 1000);
+    gsap.delayedCall(delay, () => drawTraco(traco, 0.6).play());
+  }
 
   // The width axis opens as the reader scrolls: Compressed → Wide, the MIV's own family.
   if (title && desktop()) {
@@ -116,17 +116,27 @@ function initHero(): void {
 }
 
 /* ------------------------------------------------------------------ */
+/**
+ * Writes the symbol. The mask is attached only when the animation actually
+ * starts and removed when it ends, so a trigger that never fires leaves the
+ * glyph fully visible instead of hiding it.
+ */
 export function drawTraco(svg: SVGSVGElement, duration = 0.9): gsap.core.Timeline {
   const a = svg.querySelector<SVGPathElement>('[data-traco-a]')!;
   const b = svg.querySelector<SVGPathElement>('[data-traco-b]')!;
+  const fill = svg.querySelector<SVGElement>('.traco-fill')!;
   const la = a.getTotalLength();
   const lb = b.getTotalLength();
-  const fill = svg.querySelector<SVGPathElement>('.traco-fill')!;
-  fill.setAttribute('mask', fill.dataset.mask ?? '');
-  const tl = gsap.timeline({ onComplete: () => fill.removeAttribute('mask') });
-  gsap.set(a, { strokeDasharray: la, strokeDashoffset: la });
-  gsap.set(b, { strokeDasharray: lb, strokeDashoffset: lb });
   const share = la / (la + lb);
+  const tl = gsap.timeline({
+    paused: true,
+    onStart: () => {
+      gsap.set(a, { strokeDasharray: la, strokeDashoffset: la });
+      gsap.set(b, { strokeDasharray: lb, strokeDashoffset: lb });
+      fill.setAttribute('mask', fill.dataset.mask ?? '');
+    },
+    onComplete: () => fill.removeAttribute('mask'),
+  });
   tl.to(a, { strokeDashoffset: 0, duration: duration * share, ease: 'power2.inOut' })
     .to(b, { strokeDashoffset: 0, duration: duration * (1 - share), ease: 'power2.inOut' }, '>-0.05');
   return tl;
@@ -135,8 +145,8 @@ export function drawTraco(svg: SVGSVGElement, duration = 0.9): gsap.core.Timelin
 function initTracos(): void {
   document.querySelectorAll<SVGSVGElement>('[data-traco]').forEach((svg) => {
     if (svg.dataset.traco === 'hero') return;
-    const tl = drawTraco(svg, 0.9).pause();
-    ScrollTrigger.create({ trigger: svg, start: 'top 80%', once: true, onEnter: () => tl.play() });
+    const tl = drawTraco(svg, 0.9);
+    ScrollTrigger.create({ trigger: svg, start: 'top 85%', once: true, onEnter: () => tl.play() });
   });
 }
 

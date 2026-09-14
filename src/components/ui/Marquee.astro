@@ -24,7 +24,10 @@ const frases = [
 </section>
 
 <style>
-  .marquee { background: #baff00; color: #000000; padding-block: 1.5rem; overflow: clip; }
+  .marquee {
+    --ink: #000000; --ink-2: #000000; --linha: rgb(0 0 0 / 0.22);
+    background: #baff00; color: var(--ink); padding-block: 1.5rem; overflow: clip;
+  }
   .marquee-faixa { display: flex; width: max-content; }
   .marquee-lista { display: flex; align-items: center; flex-shrink: 0; animation: marquee 48s linear infinite; }
   .marquee-faixa:hover .marquee-lista { animation-play-state: paused; }

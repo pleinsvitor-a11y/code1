@@ -1,0 +1,20 @@
+---
+/**
+ * The brand vectors, defined once per page. Every Simbolo/Traco/wordmark is a
+ * <use> of these symbols, so the marks cost one copy of the path, not one per
+ * occurrence, and still inherit currentColor.
+ */
+import { SIMBOLO_D, SIMBOLO_TRANSLATE, SIMBOLO_VIEWBOX, WORDMARK_D, WORDMARK_TRANSLATE, WORDMARK_VIEWBOX } from '@/lib/brand-paths';
+---
+<svg xmlns="http://www.w3.org/2000/svg" class="sprite" aria-hidden="true" focusable="false">
+  <symbol id="volgus-simbolo" viewBox={SIMBOLO_VIEWBOX}>
+    <path transform={`translate(${SIMBOLO_TRANSLATE})`} fill="currentColor" d={SIMBOLO_D} />
+  </symbol>
+  <symbol id="volgus-wordmark" viewBox={WORDMARK_VIEWBOX}>
+    <path transform={`translate(${WORDMARK_TRANSLATE})`} fill="currentColor" d={WORDMARK_D} />
+  </symbol>
+</svg>
+
+<style>
+  .sprite { position: absolute; width: 0; height: 0; overflow: hidden; }
+</style>

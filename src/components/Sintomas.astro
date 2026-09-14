@@ -68,7 +68,12 @@ const dados = [
 
   .sintomas-fecho { margin-top: clamp(3.5rem, 7vw, 6rem); max-width: 22ch; font-variation-settings: "opsz" 96, "wdth" 85; }
 
-  .dados { padding-block: clamp(2.5rem, 5vw, 4rem); background: #383838 !important; color: #ffffff; --ink: #ffffff; --ink-2: rgb(255 255 255 / 0.7); position: relative; z-index: 1; }
+  .dados {
+    padding-block: clamp(2.5rem, 5vw, 4rem);
+    --ink: #ffffff; --ink-2: rgb(255 255 255 / 0.7); --linha: rgb(255 255 255 / 0.16);
+    background: #383838; color: var(--ink);
+    position: relative; z-index: 1;
+  }
   .dados-inner { display: grid; gap: 2rem; }
   .dado { display: grid; gap: 0.5rem; }
   .dado-num { font-size: clamp(3rem, 6vw, 5.5rem); line-height: 0.9; font-weight: 800; letter-spacing: -0.04em; color: #baff00; font-variation-settings: "opsz" 96, "wdth" 85; }

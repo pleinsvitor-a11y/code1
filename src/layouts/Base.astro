@@ -4,6 +4,7 @@ import { SITE } from '@/config/site';
 import Nav from '@/components/Nav.astro';
 import Footer from '@/components/Footer.astro';
 import Cursor from '@/components/ui/Cursor.astro';
+import Sprite from '@/components/ui/Sprite.astro';
 import Consent from '@/components/ui/Consent.astro';
 import JsonLd from '@/components/JsonLd.astro';
 
@@ -62,22 +63,25 @@ const ogUrl = new URL(ogImage, SITE.domain).toString();
     <meta name="twitter:image" content={ogUrl} />
 
     <link rel="preload" href="/fonts/bricolage.woff2" as="font" type="font/woff2" crossorigin />
-    <link rel="preload" href="/fonts/work-sans.woff2" as="font" type="font/woff2" crossorigin />
-    <link rel="preload" href="/fonts/fraunces-italic.woff2" as="font" type="font/woff2" crossorigin />
 
     <script is:inline>document.documentElement.classList.replace('no-js', 'js');</script>
     <JsonLd />
     <slot name="head" />
   </head>
   <body data-mode="preto" data-motion={motion ? 'on' : 'off'}>
+    <Sprite />
     <a href="#conteudo" class="skip-link">Pular para o conteúdo</a>
     {!bare && <Nav minimal={minimalNav} />}
-    <div class="page">
-      <div class="regua" aria-hidden="true"></div>
-      <main id="conteudo" tabindex="-1">
-        <slot />
-      </main>
-    </div>
+    {bare ? (
+      <slot />
+    ) : (
+      <div class="page">
+        <div class="regua" aria-hidden="true"></div>
+        <main id="conteudo" tabindex="-1">
+          <slot />
+        </main>
+      </div>
+    )}
     {!bare && <Footer />}
     {!bare && <Cursor />}
     <Consent />
@@ -85,10 +89,17 @@ const ogUrl = new URL(ogImage, SITE.domain).toString();
       import { captureUtm } from '@/lib/utm';
       import { initSurfaceObserver } from '@/lib/surface';
       captureUtm();
-      // Motion (GSAP + Lenis) is a separate chunk, loaded only on scroll pages.
       if (document.body.dataset.motion !== 'off') {
+        // The surface observer is tiny and must run now: the nav reads it.
         initSurfaceObserver();
-        import('@/lib/motion').then((m) => m.initMotion());
+        // Motion (GSAP + Lenis) is a separate chunk. It waits for the first paint
+        // so it never competes with the hero font for bandwidth. The hero entrance
+        // itself is CSS, so nothing visible depends on this arriving early.
+        const start = () => import('@/lib/motion').then((m) => m.initMotion());
+        if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+          if ('requestIdleCallback' in window) requestIdleCallback(start, { timeout: 1200 });
+          else setTimeout(start, 200);
+        }
       }
     </script>
   </body>

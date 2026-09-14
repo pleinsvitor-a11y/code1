@@ -11,13 +11,13 @@ const html = `<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><sty
 html,body{margin:0}body{width:1200px;height:630px;background:#000;color:#fff;font-family:W;position:relative;overflow:hidden}
 .grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.08) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.08) 1px,transparent 1px);background-size:40px 40px}
 .logo{position:absolute;top:56px;left:64px;display:flex;align-items:center;gap:12px}.logo svg:first-child{height:34px;width:auto}.logo svg:last-child{height:18px;width:auto}
-h1{position:absolute;left:64px;top:170px;margin:0;font-family:B;font-weight:800;font-size:86px;line-height:.92;letter-spacing:-.04em;text-transform:uppercase;font-variation-settings:"opsz" 96,"wdth" 82;max-width:1000px}
+h1{position:absolute;left:64px;top:176px;margin:0;font-family:B;font-weight:800;font-size:64px;line-height:.92;letter-spacing:-.04em;text-transform:uppercase;font-variation-settings:"opsz" 96,"wdth" 76;white-space:nowrap}
 h1 em{font-style:normal;color:#baff00}
-p{position:absolute;left:64px;bottom:64px;margin:0;font-size:26px;color:rgba(255,255,255,.72);max-width:760px;line-height:1.35}
+p{position:absolute;left:64px;bottom:64px;margin:0;font-size:24px;color:rgba(255,255,255,.72);max-width:720px;line-height:1.4}
 .regua{position:absolute;left:34px;top:0;bottom:0;width:1px;background:rgba(255,255,255,.22)}
 </style></head><body><div class="grid"></div><div class="regua"></div>
 <div class="logo">${simbolo.replace('<svg ', '<svg style="height:34px;width:auto" ')}${wordmark}</div>
-<h1>Você não tem problema de venda.<br>Você tem problema de <em>previsibilidade.</em></h1>
+<h1>Você não tem problema de venda.<br>Você tem problema<br>de <em>previsibilidade.</em></h1>
 <p>Estruturação e gestão comercial para PMEs. Método, processo e acompanhamento até o comercial rodar sem o dono.</p>
 </body></html>`;
 await mkdir('public/og', { recursive: true });

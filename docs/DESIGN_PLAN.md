@@ -19,12 +19,20 @@
 | Stack | `astro@5.18.2` (último 5.x), `@astrojs/react@4`, `tailwindcss@4` + `@tailwindcss/vite`, `gsap@3.15`, `lenis@1.3`. Tudo resolvendo no registro npm. |
 | ffmpeg | Disponível no ambiente de build (binário estático). Os comandos de tratamento do vídeo estão prontos. |
 
-### O que ainda depende do usuário (bloqueia apenas partes específicas)
+### O que o usuário respondeu (Fase 0, aprovada)
 
-1. **As 4 fotos.** Elas chegaram como imagens coladas na conversa, não como arquivos. Preciso dos JPEGs originais em `public/photos/` (ou anexados como arquivo). Sem elas, o hero e a seção "Vitor" sobem com o espaço reservado e a máscara prontos, mas vazios.
-2. **Os vídeos.** Estão no Drive compartilhado (pasta `VIDEO MARKETING VOLGUS`, 47 MB e 27 MB), mas o ambiente de build não consegue baixar do `drive.google.com` (host bloqueado pela política de rede). Duas saídas: (a) o usuário coloca o MP4 original em `public/video/_source/` e o script `scripts/prepare-media.sh` gera o loop, ou (b) o site sobe com poster estático e `TODO` no `DEPLOY.md`.
-3. **O `Volgus.zip` do Drive.** Mesmo bloqueio de rede. Como o logo já foi recuperado em vetor do próprio MIV, o zip só faria diferença se contivesse **fontes com licença de webfont** — ver pergunta 4 abaixo.
-4. **As 7 respostas da Fase 0** (seção 9 deste documento).
+| Pergunta | Resposta | Onde entrou |
+|---|---|---|
+| WhatsApp comercial | +55 15 99705-6889 | `SITE.whatsapp = '5515997056889'` |
+| Instagram da marca | @volgusms | `SITE.instagramMarca` |
+| Instagram pessoal | @vitorpleins | `SITE.instagramPessoal` |
+| Agenda | Será Calendly, link depois | `SITE.agendaUrl = ''` — o perfil Verde cai no WhatsApp até o link existir |
+
+### O que ainda depende do usuário (não bloqueia o site)
+
+1. **As 4 fotos.** Chegaram como imagens coladas na conversa, não como arquivos. Os slots existem, com máscara e tratamento prontos: basta colocar os JPEG em `src/assets/photos/` com os nomes da seção 5 do `DEPLOY.md`. Enquanto não existirem, as seções renderizam sem foto e sem quebrar nada.
+2. **Os vídeos.** Estão no Drive compartilhado, mas o ambiente de build não alcança `drive.google.com` (host negado pela política de rede da sessão, não por falta de permissão). O caminho está pronto: MP4 original em `public/video/_source/` e `bash scripts/prepare-media.sh` gera loop, webm e poster.
+3. **O `Volgus.zip` do Drive.** Mesmo bloqueio. Ficou sem consequência: o logo foi recuperado em vetor do próprio MIV. O zip só importaria se trouxesse licença de webfont das fontes comerciais.
 
 ---
 
@@ -512,3 +520,49 @@ Nenhuma delas bloqueia a Fase 2 (fundação) nem a Fase 3 (home). Os valores fic
 ---
 
 *Fim do plano. A Fase 2 começa quando este documento for aprovado — ou com as correções que você pedir.*
+
+
+---
+
+## 10. O que mudou da aprovação para a execução
+
+Registro honesto das decisões que divergiram do plano aprovado, e por quê.
+
+| Item do plano | O que foi construído | Motivo |
+|---|---|---|
+| Nav inverte com `mix-blend-mode: difference` | A nav lê a cor de tinta atual da superfície (`var(--ink)`) | Um `<header>` fixo com `z-index` é o próprio contexto de empilhamento: o `difference` não tinha fundo contra o que operar e o logo sumia nas seções claras. A troca é determinística e mede 17,4:1 no pior caso (seção lime) — verificado seção a seção. |
+| Entrada do hero orquestrada em GSAP | A revelação das quatro linhas é CSS puro; o GSAP só desenha o traço | O hero é o elemento de LCP. Em CSS ele começa na primeira pintura, sem esperar o chunk de 138 KB do GSAP. O chunk passou a carregar em `requestIdleCallback`, e o Speed Index caiu de 3,1 s para 1,8 s. |
+| Traço revelado por máscara desde o início | A máscara só é aplicada quando a animação começa, e é removida no fim | Se um gatilho de scroll falhasse, o símbolo ficava invisível. Agora o pior caso é "não animou, mas está lá". |
+| Símbolo inline em cada ocorrência | Um sprite `<symbol>` por página, com `<use>` em cada ocorrência | O marquee repete o símbolo 10 vezes. Inline, o HTML da home tinha 110 KB; com sprite, 83 KB. |
+| Rodapé com o símbolo em lime | Símbolo do rodapé em branco | Mantém o orçamento de lime em 7 de 8 e deixa o rodapé monocromático, como o plano pede. |
+| Seções pintadas só pelo tween do `<body>` | As três seções que pintam o próprio fundo (faixa de dados, marquee e CTA) declaram também a própria tinta | Elas herdavam a tinta do body a meio da transição e podiam mostrar texto claro sobre lime. Era o único defeito real de contraste encontrado. |
+| Bricolage Grotesque variável completa | Eixo `opsz` fixado em 96, `wght` e `wdth` preservados | 121 KB → 71 KB sem perder o comportamento Compressed→Wide, que é o efeito do hero. |
+
+### Verificação final (medida, não estimada)
+
+Servido como a hospedagem vai servir: pasta `dist/` estática com o gzip que o `.htaccess` liga.
+
+| Página | Performance | Acessibilidade | Boas práticas | SEO | LCP | CLS | Peso |
+|---|---|---|---|---|---|---|---|
+| Home | 98 | 100 | 100 | 100 | 2,3 s | 0 | 246 KiB |
+| /diagnostico | 99 | 100 | 100 | 100 | 2,1 s | 0 | 208 KiB |
+| /privacidade | 100 | 100 | 100 | 100 | 1,7 s | 0,007 | 179 KiB |
+
+Metas do briefing: Performance ≥ 92 ✓ · Acessibilidade 100 ✓ · Boas práticas ≥ 95 ✓ · SEO 100 ✓ · CLS < 0,05 ✓ · peso da home < 900 KB ✓.
+
+**A única meta não atingida é o LCP < 1,8 s: a home mede 2,3 s.** O caminho crítico é a fonte de display (71 KB, já reduzida pela metade), que o título do hero precisa para pintar. Baixar disso exigiria `font-display: optional` (o primeiro acesso veria a fonte de sistema) ou abandonar o eixo de largura variável, que é o efeito do hero e vem do próprio manual. Ficou como está, e fica registrado.
+
+### Checklist de aceite — resultado
+
+108 de 108 verificações automáticas passaram (`node scripts/qa.mjs`), cobrindo:
+
+- Sem overflow horizontal e sem sobreposição de seções em 1920, 1440, 1280, 1024, 768, 430 e 390 px, nas quatro páginas
+- Zero erro de console em todas as combinações
+- Lime aparece 7 vezes no scroll completo (teto 8), traço caligráfico exatamente 3 vezes
+- Contraste WCAG AA em todo texto, com cada seção medida enquanto está de fato na tela
+- Um único `<h1>` por página, hierarquia de heading sem pulo, landmarks presentes
+- Primeiro Tab revela o link de pular conteúdo, foco com anel lime visível
+- Fluxo: autofoco por tela, Esc volta, `aria-live` na troca, todo campo com `<label>`
+- Todos os links do rodapé, a 404 em rota inexistente, OG, favicon, robots e sitemap
+
+Fluxo testado ponta a ponta nos três perfis (`node scripts/funnel-test.mjs`): Verde → estágio 4 Sistema, Amarelo → estágio 2 Esforço, Vermelho → estágio 1 Improviso, com UTM presente na mensagem, respostas preservadas ao voltar e progresso mantido após refresh.
