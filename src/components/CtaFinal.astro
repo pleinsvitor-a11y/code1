@@ -1,0 +1,29 @@
+---
+import Botao from '@/components/ui/Botao.astro';
+import Traco from '@/components/ui/Traco.astro';
+---
+<section id="cta" data-surface="lime" class="secao ctafinal" aria-labelledby="cta-titulo">
+  <span class="secao-label" aria-hidden="true">§ 09</span>
+  <Traco id="cta" class="ctafinal-traco" />
+  <div class="container"><div class="ctafinal-inner">
+    <h2 id="cta-titulo" class="t-display t-h1 ctafinal-titulo">Vamos organizar o seu comercial?</h2>
+    <p class="ctafinal-texto prose">Comece pelo diagnóstico. São 8 perguntas, dois minutos, e você recebe na hora uma leitura do estágio em que a sua operação comercial está.</p>
+    <Botao href="/diagnostico" size="lg" micro="Sem pressão. Sem firula. Só uma conversa honesta para te ajudar a vender mais sem perder o controle.">Fazer o diagnóstico</Botao>
+  </div></div>
+</section>
+
+<style>
+  .ctafinal { overflow: clip; background: #baff00; color: #000000; }
+  .ctafinal-inner { position: relative; display: grid; gap: 2rem; max-width: 40rem; }
+  .ctafinal-titulo { max-width: 12ch; font-variation-settings: "opsz" 96, "wdth" 82; }
+  .ctafinal-texto { max-width: 40ch; }
+  .ctafinal :global(.btn-micro) { max-width: 40ch; white-space: normal; color: #000000; opacity: 0.72; }
+  .ctafinal-traco {
+    position: absolute; color: #000000; pointer-events: none;
+    right: -10%; top: 50%; width: clamp(18rem, 40vw, 46rem); transform: translateY(-44%);
+  }
+  @media (max-width: 1023px) {
+    .ctafinal { padding-bottom: calc(var(--spacing-secao) + 10rem); }
+    .ctafinal-traco { right: -34%; top: auto; bottom: -4%; width: 24rem; transform: none; }
+  }
+</style>

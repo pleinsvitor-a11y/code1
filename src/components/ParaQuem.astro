@@ -1,0 +1,48 @@
+---
+const sim = [
+  'Sua empresa fatura entre R$ 800 mil e R$ 8 milhões por ano',
+  'Você presta serviço B2B e vende de forma consultiva',
+  'Tem de 1 a 6 pessoas no comercial, incluindo você',
+  'O crescimento travou e boa parte da receita ainda vem de indicação',
+  'Você quer estrutura, não atalho',
+];
+const nao = [
+  'Você ainda está validando o produto ou o mercado',
+  'Procura curso, palestra ou conteúdo motivacional',
+  'Quer terceirizar a venda em vez de estruturar a operação',
+  'Espera resultado sem envolver o time na mudança',
+];
+---
+<section id="para-quem" data-surface="claro" class="secao paraquem" aria-labelledby="paraquem-titulo">
+  <span class="secao-label" aria-hidden="true">§ 08</span>
+  <div class="container">
+    <h2 id="paraquem-titulo" class="sr-only">Para quem é e para quem não é</h2>
+    <div class="paraquem-colunas">
+      <div class="paraquem-col">
+        <h3 class="t-display t-h2 paraquem-rotulo">Faz sentido conversar se:</h3>
+        <ul class="paraquem-lista">{sim.map((i) => <li>{i}</li>)}</ul>
+      </div>
+      <div class="paraquem-col paraquem-col-nao">
+        <h3 class="t-display t-h2 paraquem-rotulo">Não faz sentido agora se:</h3>
+        <ul class="paraquem-lista">{nao.map((i) => <li>{i}</li>)}</ul>
+      </div>
+    </div>
+    <p class="paraquem-fecho t-narrativa">Se você está no segundo grupo, tudo bem. O diagnóstico vai te dizer isso em dois minutos, sem custo e sem conversa de vendas.</p>
+  </div>
+</section>
+
+<style>
+  .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  .paraquem-colunas { display: grid; gap: 3rem; }
+  .paraquem-col { display: grid; gap: 1.75rem; align-content: start; }
+  .paraquem-rotulo { max-width: 14ch; font-variation-settings: "opsz" 96, "wdth" 85; }
+  .paraquem-lista { display: grid; }
+  .paraquem-lista li { padding-block: 0.875rem; border-top: 1px solid var(--linha); max-width: 34ch; text-wrap: pretty; }
+  .paraquem-lista li:last-child { border-bottom: 1px solid var(--linha); }
+  .paraquem-col-nao { color: var(--ink-2); }
+  .paraquem-fecho { margin-top: clamp(3rem, 6vw, 5rem); max-width: 40ch; font-size: clamp(1.25rem, 1.8vw, 1.75rem); line-height: 1.4; }
+  @media (min-width: 900px) {
+    .paraquem-colunas { grid-template-columns: 1fr 1fr; gap: clamp(3rem, 6vw, 6rem); position: relative; }
+    .paraquem-colunas::before { content: ""; position: absolute; top: 0; bottom: 0; left: 50%; width: 1px; background: var(--linha); }
+  }
+</style>

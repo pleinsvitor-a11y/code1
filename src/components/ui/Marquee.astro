@@ -1,0 +1,42 @@
+---
+import Simbolo from '@/components/ui/Simbolo.astro';
+const frases = [
+  'Vender uma vez é sorte. Vender todo mês é sistema.',
+  'Venda não é feeling. É método.',
+  'Seu negócio não precisa de mais esforço. Precisa de estrutura.',
+  'Empresa que cresce não faz canal. Opera arquitetura.',
+  'Quem sabe vender domina o próprio destino.',
+];
+---
+<section data-surface="lime" class="marquee" aria-label="Frases da VOLGUS">
+  <div class="marquee-faixa" data-marquee>
+    {[0, 1].map((k) => (
+      <ul class="marquee-lista" aria-hidden={k === 1 ? 'true' : undefined}>
+        {frases.map((f) => (
+          <li class="marquee-item t-display">
+            <span>{f}</span>
+            <Simbolo class="marquee-simbolo mark-simbolo" />
+          </li>
+        ))}
+      </ul>
+    ))}
+  </div>
+</section>
+
+<style>
+  .marquee { background: #baff00; color: #000000; padding-block: 1.5rem; overflow: clip; }
+  .marquee-faixa { display: flex; width: max-content; }
+  .marquee-lista { display: flex; align-items: center; flex-shrink: 0; animation: marquee 48s linear infinite; }
+  .marquee-faixa:hover .marquee-lista { animation-play-state: paused; }
+  .marquee-item { display: flex; align-items: center; gap: clamp(1.5rem, 3vw, 3rem); padding-right: clamp(1.5rem, 3vw, 3rem); white-space: nowrap; font-size: clamp(1.25rem, 2.2vw, 2rem); font-weight: 600; letter-spacing: -0.02em; font-variation-settings: "opsz" 40, "wdth" 100; }
+  .marquee-simbolo { height: 1.25em; color: #000000; }
+  @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-100%); } }
+  @media (prefers-reduced-motion: reduce) {
+    .marquee-faixa { display: grid; width: auto; }
+    .marquee-lista { animation: none; flex-direction: column; align-items: flex-start; gap: 0.5rem; }
+    .marquee-lista[aria-hidden="true"] { display: none; }
+    .marquee-item { white-space: normal; }
+    .marquee-simbolo { display: none; }
+    .marquee .marquee-lista { padding-inline: var(--gutter); max-width: var(--container); margin-inline: auto; }
+  }
+</style>

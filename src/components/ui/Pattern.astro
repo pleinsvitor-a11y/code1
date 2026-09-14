@@ -4,15 +4,16 @@
  * Paints with currentColor; opacity stays between 6% and 12%.
  */
 interface Props {
+  [key: string]: unknown;
   kind: 'grid' | 'dots' | 'lines-v' | 'lines-h';
   opacity?: number;
   class?: string;
 }
-const { kind, opacity = 0.08, class: className = '' } = Astro.props;
+const { kind, opacity = 0.08, class: className = '', ...rest } = Astro.props;
 const id = `pat-${kind}-${Math.random().toString(36).slice(2, 8)}`;
 const size = kind === 'grid' ? 32 : kind === 'dots' ? 16 : 8;
 ---
-<svg class={`pattern ${className}`} aria-hidden="true" focusable="false" style={`opacity:${opacity}`}>
+<svg class={`pattern ${className}`} {...rest} aria-hidden="true" focusable="false" style={`opacity:${opacity}`}>
   <defs>
     <pattern id={id} width={size} height={size} patternUnits="userSpaceOnUse">
       {kind === 'grid' && <path d="M0 .5H32M.5 0V32" fill="none" stroke="currentColor" stroke-width="1" />}

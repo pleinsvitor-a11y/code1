@@ -1,0 +1,13 @@
+---
+/**
+ * The calligraphic stroke — the real MIV symbol, revealed as if handwritten.
+ * Static in this phase; motion.ts animates the mask stroke (data-traco).
+ */
+import { SIMBOLO_D, SIMBOLO_TRANSLATE, SIMBOLO_VIEWBOX } from '@/lib/brand-paths';
+interface Props {
+  [key: string]: unknown; class?: string; id: string }
+const { class: className = '', id, ...rest } = Astro.props;
+---
+<svg class={`traco ${className}`} {...rest} viewBox={SIMBOLO_VIEWBOX} xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" data-traco={id} overflow="visible">
+  <path class="traco-fill" transform={`translate(${SIMBOLO_TRANSLATE})`} fill="currentColor" d={SIMBOLO_D} />
+</svg>

@@ -1,0 +1,79 @@
+---
+import Pattern from '@/components/ui/Pattern.astro';
+const sintomas = [
+  { s: 'Nenhum funil documentado', t: 'Não sei em qual etapa eu perco a venda' },
+  { s: 'Pipeline invisível', t: 'Não consigo prever o que vou faturar mês que vem' },
+  { s: 'Vendedor novo demora meses para produzir', t: 'O processo está na minha cabeça, não tem playbook' },
+  { s: 'CRM comprado e abandonado', t: 'Comprei a ferramenta antes de ter o processo' },
+  { s: 'Crescimento travado na indicação', t: 'Eu vendo quando me indicam, não quando eu decido vender' },
+];
+const dados = [
+  { n: '74%', l: 'das PMEs não têm processo comercial estruturado' },
+  { n: '68%', l: 'dos donos dizem que vendas é o principal gargalo' },
+  { n: '58%', l: 'dos leads pagos nunca são respondidos' },
+];
+---
+<section id="sintomas" data-surface="preto" class="secao sintomas" aria-labelledby="sintomas-titulo">
+  <span class="secao-label" aria-hidden="true">§ 02</span>
+  <div class="container">
+    <div class="sintomas-head">
+      <h2 id="sintomas-titulo" class="t-display t-h1 sintomas-titulo">Não é falta de produto. Não é falta de mercado.</h2>
+      <p class="t-narrativa t-h2 sintomas-sub">É falta de processo.</p>
+    </div>
+
+    <dl class="sintomas-lista">
+      <Pattern kind="lines-h" opacity={0.07} class="sintomas-pauta" />
+      {sintomas.map((i) => (
+        <div class="sintoma">
+          <dt class="t-display sintoma-nome">{i.s}</dt>
+          <dd class="t-narrativa sintoma-fala">“{i.t}”</dd>
+        </div>
+      ))}
+    </dl>
+
+    <p class="t-display t-h2 sintomas-fecho">O preço do improviso é mais alto do que você imagina.</p>
+  </div>
+</section>
+
+<section data-surface="cinza" class="dados" aria-label="Dados de mercado">
+  <div class="container dados-inner">
+    {dados.map((d) => (
+      <p class="dado">
+        <span class="t-display dado-num">{d.n}</span>
+        <span class="dado-label">{d.l}</span>
+      </p>
+    ))}
+  </div>
+</section>
+
+<style>
+  .sintomas-head { display: grid; gap: 1.25rem; margin-bottom: clamp(3rem, 6vw, 5rem); }
+  .sintomas-titulo { max-width: 16ch; font-variation-settings: "opsz" 96, "wdth" 88; }
+  .sintomas-sub { color: var(--ink); }
+
+  .sintomas-lista { position: relative; margin: 0; }
+  .sintomas-pauta { z-index: 0; }
+  .sintoma {
+    position: relative; z-index: 1;
+    display: grid; gap: 0.5rem 2rem;
+    padding-block: 1.5rem;
+    border-top: 1px solid var(--linha);
+  }
+  .sintoma:last-child { border-bottom: 1px solid var(--linha); }
+  .sintoma-nome { font-size: var(--text-h3); line-height: var(--text-h3--line-height); font-weight: 600; letter-spacing: -0.02em; font-variation-settings: "opsz" 40, "wdth" 92; margin: 0; }
+  .sintoma-fala { margin: 0; font-size: clamp(1.1875rem, 1.75vw, 1.75rem); line-height: 1.4; color: var(--ink-2); text-wrap: pretty; }
+  @media (min-width: 768px) {
+    .sintoma { grid-template-columns: 5fr 7fr; align-items: baseline; padding-block: 2rem; }
+  }
+
+  .sintomas-fecho { margin-top: clamp(3.5rem, 7vw, 6rem); max-width: 22ch; font-variation-settings: "opsz" 96, "wdth" 85; }
+
+  .dados { padding-block: clamp(2.5rem, 5vw, 4rem); }
+  .dados-inner { display: grid; gap: 2rem; }
+  .dado { display: grid; gap: 0.5rem; }
+  .dado-num { font-size: clamp(3rem, 6vw, 5.5rem); line-height: 0.9; font-weight: 800; letter-spacing: -0.04em; color: #baff00; font-variation-settings: "opsz" 96, "wdth" 85; }
+  .dado-label { font-size: 0.9375rem; max-width: 22ch; color: var(--ink-2); }
+  @media (min-width: 768px) {
+    .dados-inner { grid-template-columns: repeat(3, 1fr); gap: 3rem; }
+  }
+</style>

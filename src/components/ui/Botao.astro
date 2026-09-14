@@ -7,6 +7,7 @@
  * - link:    text with a thin underline
  */
 interface Props {
+  [key: string]: unknown;
   href: string;
   variant?: 'primary' | 'ghost' | 'link';
   size?: 'md' | 'lg';
@@ -14,12 +15,12 @@ interface Props {
   class?: string;
   id?: string;
 }
-const { href, variant = 'primary', size = 'md', micro, class: className = '', id } = Astro.props;
+const { href, variant = 'primary', size = 'md', micro, class: className = '', id, ...rest } = Astro.props;
 ---
 {variant === 'link' ? (
-  <a href={href} id={id} class={`btn-link ${className}`}><slot /></a>
+  <a href={href} id={id} class={`btn-link ${className}`} {...rest}><slot /></a>
 ) : (
-  <span class={`btn-wrap ${className}`}>
+  <span class={`btn-wrap ${className}`} {...rest}>
     <a href={href} id={id} class={`btn btn-${variant} btn-${size}`}>
       <span class="btn-circle" aria-hidden="true">
         <svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg>

@@ -1,0 +1,71 @@
+---
+import { Image } from 'astro:assets';
+import { photo } from '@/lib/photos';
+const foto = photo('vitor-sentado.jpg');
+const numeros = [
+  { n: '7+', l: 'anos em vendas' },
+  { n: 'R$ 2,1 mi', l: 'estruturados em 9 meses' },
+  { n: '10+', l: 'setores atendidos' },
+];
+---
+<section id="vitor" data-surface="preto" class="secao vitor" aria-labelledby="vitor-titulo">
+  <span class="secao-label" aria-hidden="true">§ 07</span>
+  <div class="container vitor-inner">
+    <figure class="vitor-foto" aria-hidden={foto ? undefined : 'true'}>
+      {foto && (
+        <Image
+          src={foto}
+          alt="Vitor Pleins sentado, sorrindo, de blazer escuro e camisa branca, com as mãos entrelaçadas"
+          widths={[480, 768, 1200, 1800]}
+          sizes="(min-width: 1024px) 58vw, 100vw"
+          formats={['avif', 'webp']}
+          loading="lazy"
+          decoding="async"
+        />
+      )}
+    </figure>
+    <div class="vitor-texto">
+      <h2 id="vitor-titulo" class="t-editorial t-h2 vitor-titulo">De vendedor para vendedor. De quem viveu o caos e venceu com estrutura.</h2>
+      <div class="vitor-bio prose">
+        <p>Mais de 7 anos em vendas, B2C e B2B, no Brasil e na Europa. Já estruturei operações que somaram mais de R$ 2,1 milhões em nove meses. Passei por fintech de grande porte no setor de meios de pagamento, liderando times e construindo sistemas comerciais do zero.</p>
+        <p>Hoje eu faço isso dentro da empresa dos outros — e a régua é sempre a mesma: o comercial precisa funcionar quando ninguém está olhando.</p>
+      </div>
+      <ul class="vitor-numeros" aria-label="Em números">
+        {numeros.map((x) => (
+          <li class="vitor-numero">
+            <span class="t-display vitor-numero-n">{x.n}</span>
+            <span class="vitor-numero-l">{x.l}</span>
+          </li>
+        ))}
+      </ul>
+      <p class="t-mao vitor-assinatura" aria-label="Assinatura: Vitor Pleins">Vitor Pleins</p>
+    </div>
+  </div>
+</section>
+
+<style>
+  .vitor-inner { display: grid; gap: clamp(2.5rem, 6vw, 5rem); }
+  .vitor-foto {
+    margin: 0; position: relative; min-height: 18rem; overflow: hidden;
+    background: #000000;
+  }
+  .vitor-foto :global(img) {
+    width: 100%; height: 100%; object-fit: cover; object-position: center top;
+    filter: grayscale(1) contrast(1.12) brightness(0.96);
+    -webkit-mask-image: linear-gradient(to bottom, #000 78%, transparent 100%), linear-gradient(to right, transparent 0, #000 12%, #000 88%, transparent 100%);
+    mask-image: linear-gradient(to bottom, #000 78%, transparent 100%), linear-gradient(to right, transparent 0, #000 12%, #000 88%, transparent 100%);
+    -webkit-mask-composite: source-in; mask-composite: intersect;
+  }
+  .vitor-texto { display: grid; gap: 2rem; align-content: center; }
+  .vitor-titulo { max-width: 20ch; }
+  .vitor-bio { display: grid; gap: 1.25rem; color: var(--ink-2); }
+  .vitor-numeros { display: grid; grid-template-columns: repeat(3, auto); gap: 2rem; justify-content: start; padding-top: 1rem; border-top: 1px solid var(--linha); }
+  .vitor-numero { display: grid; gap: 0.25rem; }
+  .vitor-numero-n { font-size: clamp(1.75rem, 2.6vw, 2.5rem); font-weight: 600; line-height: 1; letter-spacing: -0.03em; font-variation-settings: "opsz" 96, "wdth" 88; white-space: nowrap; }
+  .vitor-numero-l { font-size: 0.875rem; color: var(--ink-2); max-width: 12ch; }
+  .vitor-assinatura { font-size: 1.75rem; color: var(--ink-2); transform: rotate(-4deg); transform-origin: left; }
+  @media (min-width: 1024px) {
+    .vitor-inner { grid-template-columns: 7fr 5fr; align-items: stretch; }
+    .vitor-foto { min-height: 40rem; }
+  }
+</style>
