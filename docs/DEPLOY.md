@@ -91,7 +91,7 @@ O site converte automaticamente para AVIF e WebP em quatro tamanhos no `npm run 
 
 O site está preparado para um loop curto de 6 segundos, sem áudio, na seção "A Ordem". **Nunca suba o MP4 original de 47 MB.**
 
-1. Coloque um dos originais em `public/video/_source/`.
+1. Coloque um dos originais em `public/video/_source/` (crie a pasta; ela não vai para o site). Detalhes em `docs/VIDEO.md`.
 2. Rode `bash scripts/prepare-media.sh "public/video/_source/nome-do-arquivo.mp4"`. Precisa do ffmpeg; se não tiver, `pip install imageio-ffmpeg` resolve.
 3. Isso cria `public/video/loop.mp4`, `loop.webm` e `poster.jpg`. Rode `npm run build` e a seção passa a mostrar o vídeo.
 

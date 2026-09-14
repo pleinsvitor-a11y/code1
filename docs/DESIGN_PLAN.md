@@ -1,5 +1,5 @@
 # VOLGUS — PLANO DE DESIGN
-### Fase 1 · Escrito antes de qualquer linha de código · Aguarda aprovação
+### Fase 1 · Escrito antes de qualquer linha de código · Aprovado e executado
 
 > Fonte de tudo que está aqui: `VOLGUS_BRIEFING.md` e `Volgus_-_MIV.pdf` (57 páginas, lidas na íntegra, incluindo os mockups das páginas 47 a 54).
 > A seção 8 deste documento registra a autocrítica: cada decisão que "serviria para qualquer consultoria B2B" foi revisada e o que mudou está anotado.

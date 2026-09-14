@@ -5,6 +5,7 @@ set -euo pipefail
 IN="${1:?usage: prepare-media.sh input.mp4 [start]}"
 START="${2:-0}"
 OUT="public/video"
+mkdir -p public/video/_source
 FF="${FFMPEG:-ffmpeg}"
 if ! command -v "$FF" >/dev/null 2>&1; then
   FF="$(python3 -c 'import imageio_ffmpeg as f; print(f.get_ffmpeg_exe())' 2>/dev/null || true)"
