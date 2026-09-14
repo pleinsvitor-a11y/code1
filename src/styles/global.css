@@ -1,0 +1,258 @@
+@import "tailwindcss";
+
+/* ------------------------------------------------------------------ */
+/* Design tokens — every value comes from the VOLGUS MIV               */
+/* ------------------------------------------------------------------ */
+@theme {
+  --color-*: initial;
+  --color-preto: #000000;
+  --color-lime: #baff00;
+  --color-verde: #68e80c;
+  --color-branco: #ffffff;
+  --color-cinza-claro: #f0f0f0;
+  --color-cinza-escuro: #383838;
+  --color-linha: rgb(255 255 255 / 0.12);
+  --color-linha-clara: rgb(0 0 0 / 0.12);
+
+  --font-display: "Bricolage Grotesque", "Arial Narrow", "Helvetica Neue", Arial, sans-serif;
+  --font-editorial: "Gloock", "Times New Roman", Georgia, serif;
+  --font-narrativa: "Fraunces", Georgia, "Times New Roman", serif;
+  --font-mao: "Nothing You Could Do", "Segoe Script", cursive;
+  --font-corpo: "Work Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+
+  --text-mega: clamp(2.5rem, 7.4vw, 7.75rem);
+  --text-mega--line-height: 0.9;
+  --text-h1: clamp(2.5rem, 6.5vw, 6rem);
+  --text-h1--line-height: 0.95;
+  --text-h2: clamp(1.875rem, 4vw, 3.5rem);
+  --text-h2--line-height: 1.05;
+  --text-h3: clamp(1.375rem, 2.2vw, 2rem);
+  --text-h3--line-height: 1.15;
+  --text-corpo: clamp(1.0625rem, 1.15vw, 1.25rem);
+  --text-corpo--line-height: 1.6;
+  --text-micro: 0.8125rem;
+  --text-micro--line-height: 1.4;
+  --text-letra: clamp(8rem, 22vw, 20rem);
+  --text-letra--line-height: 0.85;
+
+  --spacing-secao: clamp(6rem, 12vw, 14rem);
+  --spacing-gutter: clamp(1.25rem, 4vw, 5rem);
+
+  --ease-out-expo: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* ------------------------------------------------------------------ */
+/* Self-hosted fonts — five files, latin subset                        */
+/* ------------------------------------------------------------------ */
+@font-face {
+  font-family: "Bricolage Grotesque";
+  src: url("/fonts/bricolage.woff2") format("woff2-variations"), url("/fonts/bricolage.woff2") format("woff2");
+  font-weight: 200 800;
+  font-stretch: 75% 100%;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Gloock";
+  src: url("/fonts/gloock.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Fraunces";
+  src: url("/fonts/fraunces-italic.woff2") format("woff2-variations"), url("/fonts/fraunces-italic.woff2") format("woff2");
+  font-weight: 100 900;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Nothing You Could Do";
+  src: url("/fonts/mao.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Work Sans";
+  src: url("/fonts/work-sans.woff2") format("woff2-variations"), url("/fonts/work-sans.woff2") format("woff2");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ------------------------------------------------------------------ */
+/* Surfaces. The body owns the current surface; sections declare       */
+/* their target with data-surface. With motion enabled, JS tweens      */
+/* the body variables between sections; without it, CSS paints each   */
+/* section directly.                                                   */
+/* ------------------------------------------------------------------ */
+:root {
+  --surface: #000000;
+  --ink: #ffffff;
+  --ink-2: rgb(255 255 255 / 0.62);
+  --linha: rgb(255 255 255 / 0.12);
+  --gutter: var(--spacing-gutter);
+  --container: 1440px;
+  --regua-x: max(calc((100% - var(--container)) / 2), 0px);
+  color-scheme: dark;
+}
+
+[data-surface="preto"] { --s-surface: #000000; --s-ink: #ffffff; --s-ink-2: rgb(255 255 255 / 0.62); --s-linha: rgb(255 255 255 / 0.12); }
+[data-surface="cinza"] { --s-surface: #383838; --s-ink: #ffffff; --s-ink-2: rgb(255 255 255 / 0.7); --s-linha: rgb(255 255 255 / 0.16); }
+[data-surface="claro"] { --s-surface: #f0f0f0; --s-ink: #000000; --s-ink-2: #383838; --s-linha: rgb(0 0 0 / 0.12); }
+[data-surface="branco"] { --s-surface: #ffffff; --s-ink: #000000; --s-ink-2: #383838; --s-linha: rgb(0 0 0 / 0.12); }
+[data-surface="lime"] { --s-surface: #baff00; --s-ink: #000000; --s-ink-2: #000000; --s-linha: rgb(0 0 0 / 0.22); }
+
+html:not(.motion) [data-surface] {
+  --surface: var(--s-surface);
+  --ink: var(--s-ink);
+  --ink-2: var(--s-ink-2);
+  --linha: var(--s-linha);
+  background-color: var(--surface);
+  color: var(--ink);
+}
+
+/* ------------------------------------------------------------------ */
+/* Base                                                                */
+/* ------------------------------------------------------------------ */
+html {
+  scroll-behavior: auto;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+body {
+  margin: 0;
+  background-color: var(--surface);
+  color: var(--ink);
+  font-family: var(--font-corpo);
+  font-size: var(--text-corpo);
+  line-height: var(--text-corpo--line-height);
+  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  overflow-x: clip;
+}
+::selection { background: #baff00; color: #000000; }
+
+:focus-visible {
+  outline: 2px solid #baff00;
+  outline-offset: 4px;
+  box-shadow: 0 0 0 4px var(--surface);
+  border-radius: 2px;
+}
+
+* { scrollbar-width: thin; scrollbar-color: #383838 transparent; }
+*::-webkit-scrollbar { width: 6px; height: 6px; }
+*::-webkit-scrollbar-thumb { background: #383838; border-radius: 3px; }
+*::-webkit-scrollbar-track { background: transparent; }
+
+h1, h2, h3, h4 { margin: 0; font-weight: 700; text-wrap: balance; }
+p { margin: 0; }
+a { color: inherit; text-decoration: none; }
+button { font: inherit; color: inherit; background: none; border: 0; padding: 0; cursor: pointer; }
+img, svg, video { display: block; max-width: 100%; }
+ul, ol { margin: 0; padding: 0; list-style: none; }
+
+.skip-link {
+  position: fixed;
+  top: 0.75rem;
+  left: 0.75rem;
+  z-index: 100;
+  padding: 0.75rem 1.25rem;
+  background: #baff00;
+  color: #000000;
+  font-weight: 600;
+  border-radius: 999px;
+  transform: translateY(-200%);
+  transition: transform 150ms;
+}
+.skip-link:focus-visible { transform: none; }
+
+/* ------------------------------------------------------------------ */
+/* Layout primitives                                                   */
+/* ------------------------------------------------------------------ */
+.container {
+  width: 100%;
+  max-width: var(--container);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+  box-sizing: border-box;
+}
+.grid-12 {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: clamp(1rem, 2vw, 2rem);
+}
+.prose { max-width: 68ch; }
+.prose-narrativa { max-width: 60ch; line-height: 1.7; }
+
+/* Type roles */
+.t-display { font-family: var(--font-display); font-weight: 800; letter-spacing: -0.04em; font-variation-settings: "opsz" 96, "wdth" 90; }
+.t-editorial { font-family: var(--font-editorial); font-weight: 400; letter-spacing: -0.01em; }
+.t-narrativa { font-family: var(--font-narrativa); font-style: italic; font-weight: 400; font-variation-settings: "wght" 400; }
+.t-mao { font-family: var(--font-mao); font-weight: 400; }
+.t-micro { font-size: var(--text-micro); line-height: var(--text-micro--line-height); font-weight: 500; }
+.t-mega { font-size: var(--text-mega); line-height: var(--text-mega--line-height); }
+.t-h1 { font-size: var(--text-h1); line-height: var(--text-h1--line-height); }
+.t-h2 { font-size: var(--text-h2); line-height: var(--text-h2--line-height); }
+.t-h3 { font-size: var(--text-h3); line-height: var(--text-h3--line-height); }
+.t-letra { font-size: var(--text-letra); line-height: var(--text-letra--line-height); }
+.ink-2 { color: var(--ink-2); }
+
+/* ------------------------------------------------------------------ */
+/* The ruler — one measuring line along the whole page                 */
+/* ------------------------------------------------------------------ */
+.regua {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: calc(var(--regua-x) + var(--gutter) - 1.5rem);
+  width: 1px;
+  pointer-events: none;
+  z-index: 2;
+  background-image:
+    linear-gradient(currentColor, currentColor),
+    repeating-linear-gradient(to bottom, transparent 0, transparent calc(8rem - 1px), currentColor calc(8rem - 1px), currentColor 8rem);
+  background-size: 1px 100%, 8px 100%;
+  background-repeat: no-repeat, repeat-y;
+  background-position: 0 0, 0 0;
+  opacity: 0.22;
+}
+@media (max-width: 767px) {
+  .regua { left: 0.625rem; background-size: 1px 100%, 5px 100%; }
+}
+.secao { position: relative; padding-block: var(--spacing-secao); }
+.secao-label {
+  position: absolute;
+  top: var(--spacing-secao);
+  left: calc(var(--regua-x) + var(--gutter) - 1.5rem);
+  transform: translateX(-100%) rotate(-90deg) translateX(-100%);
+  transform-origin: 100% 100%;
+  font-size: var(--text-micro);
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+  color: var(--ink-2);
+  padding-right: 0.5rem;
+}
+@media (max-width: 767px) { .secao-label { display: none; } }
+.sangra { margin-inline: calc(50% - 50vw); width: 100vw; max-width: 100vw; }
+
+/* Brand marks keep their intrinsic ratio when sized by height */
+.mark-simbolo { aspect-ratio: 110.22 / 77.16; width: auto; }
+.mark-wordmark { aspect-ratio: 246 / 45; width: auto; }
+
+/* Patterns paint with currentColor at low opacity */
+.pattern { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; color: currentColor; }
+
+/* Reduced motion: nothing moves except opacity under 150ms */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 120ms !important;
+    scroll-behavior: auto !important;
+  }
+}

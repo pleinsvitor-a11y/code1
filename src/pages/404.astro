@@ -1,0 +1,21 @@
+---
+import Base from '@/layouts/Base.astro';
+import Botao from '@/components/ui/Botao.astro';
+---
+<Base title="Página não encontrada — VOLGUS" noindex minimalNav>
+  <section data-surface="preto" class="nf" aria-label="Página não encontrada">
+    <div class="container nf-inner">
+      <p class="nf-num t-display t-letra" aria-hidden="true">404</p>
+      <h1 class="nf-title t-narrativa t-h2">Não é falta de conteúdo. É falta de endereço.</h1>
+      <p class="nf-sub prose ink-2">A página que você procurou não existe ou mudou de lugar.</p>
+      <Botao href="/">Voltar para o início</Botao>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .nf { min-height: 100svh; display: flex; align-items: center; padding-block: 8rem 4rem; }
+  .nf-inner { display: grid; gap: 1.5rem; justify-items: start; }
+  .nf-num { font-variation-settings: "opsz" 96, "wdth" 75; letter-spacing: -0.06em; margin-left: -0.04em; }
+  .nf-title { max-width: 18ch; }
+</style>

@@ -1,0 +1,41 @@
+---
+import Botao from '@/components/ui/Botao.astro';
+import Pattern from '@/components/ui/Pattern.astro';
+---
+<section id="hero" data-surface="preto" class="hero" aria-label="Apresentação">
+  <Pattern kind="grid" opacity={0.08} />
+  <span class="secao-label" aria-hidden="true">§ 01</span>
+  <div class="container hero-inner">
+    <h1 class="hero-title t-display t-mega">
+      <span class="hero-line"><span>Você não tem</span></span>
+      <span class="hero-line"><span>problema de venda.</span></span>
+      <span class="hero-line"><span>Você tem problema</span></span>
+      <span class="hero-line"><span>de <em class="hero-chave">previsibilidade.</em></span></span>
+    </h1>
+    <p class="hero-sub prose">
+      A VOLGUS entra no comercial da sua empresa e constrói a estrutura que faz a venda acontecer sem depender de você.
+    </p>
+    <div class="hero-ctas">
+      <Botao href="/diagnostico" size="lg" micro="2 minutos · sem compromisso · resposta na hora">Fazer o diagnóstico</Botao>
+      <Botao href="#sintomas" variant="link">Entender como funciona</Botao>
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero { position: relative; min-height: 100svh; display: flex; align-items: flex-end; padding-block: 8rem 5rem; overflow: clip; }
+  .hero .secao-label { top: 8rem; }
+  .hero-inner { position: relative; display: grid; gap: 2.5rem; }
+  .hero-title { text-transform: uppercase; font-variation-settings: "opsz" 96, "wdth" 82; max-width: 12ch; }
+  .hero-line { display: block; overflow: clip; }
+  .hero-line > span { display: block; }
+  .hero-chave { font-style: normal; position: relative; white-space: nowrap; }
+  .hero-sub { font-size: var(--text-corpo); max-width: 44ch; color: var(--ink-2); }
+  .hero-ctas { display: flex; flex-wrap: wrap; align-items: flex-start; gap: 2rem 3rem; }
+  @media (min-width: 1024px) {
+    .hero-inner { grid-template-columns: repeat(12, minmax(0, 1fr)); }
+    .hero-title { grid-column: 1 / 11; }
+    .hero-sub { grid-column: 1 / 7; }
+    .hero-ctas { grid-column: 1 / 12; }
+  }
+</style>

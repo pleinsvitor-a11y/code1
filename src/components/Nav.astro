@@ -1,0 +1,83 @@
+---
+import Simbolo from '@/components/ui/Simbolo.astro';
+interface Props { minimal?: boolean }
+const { minimal = false } = Astro.props;
+const links = [
+  { href: '/#sintomas', label: 'Sintomas' },
+  { href: '/#metodo', label: 'Método' },
+  { href: '/#para-quem', label: 'Para quem' },
+];
+---
+<header class="nav" data-nav>
+  <div class="container nav-inner">
+    <a href="/" class="nav-logo" aria-label="VOLGUS — início">
+      <Simbolo class="nav-simbolo mark-simbolo" />
+      <svg class="nav-wordmark mark-wordmark" viewBox="0 0 246 45" aria-hidden="true" focusable="false"><use href="/brand/wordmark.svg#wordmark" /></svg>
+    </a>
+    {!minimal && (
+      <nav class="nav-links" aria-label="Seções">
+        {links.map((l) => <a href={l.href}>{l.label}</a>)}
+      </nav>
+    )}
+    {!minimal && (
+      <a href="/diagnostico" class="nav-cta">Diagnóstico</a>
+    )}
+  </div>
+</header>
+
+<style>
+  .nav {
+    position: fixed; inset: 0 0 auto 0; z-index: 50;
+    height: 4.5rem;
+    transition: height 260ms var(--ease-out-expo);
+    pointer-events: none;
+  }
+  .nav.is-compact { height: 3.25rem; }
+  .nav-inner { display: flex; align-items: center; justify-content: space-between; height: 100%; gap: 1rem; }
+  .nav-inner > * { pointer-events: auto; }
+  .nav-logo {
+    display: flex; align-items: center; gap: 0.5rem;
+    color: #ffffff; mix-blend-mode: difference;
+    height: 1.75rem;
+  }
+  .nav-simbolo { height: 1.75rem; }
+  .nav-wordmark { height: 0.95rem; }
+  .nav-links {
+    display: none; gap: 2.25rem;
+    font-size: 0.9375rem; font-weight: 500;
+    color: #ffffff; mix-blend-mode: difference;
+  }
+  .nav-links a { opacity: 0.72; transition: opacity 160ms; }
+  .nav-links a:hover { opacity: 1; }
+  @media (min-width: 1024px) { .nav-links { display: flex; } }
+  .nav-cta {
+    display: inline-flex; align-items: center;
+    height: 2.5rem; padding-inline: 1.125rem; border-radius: 999px;
+    background: #baff00; color: #000000;
+    font-size: 0.9375rem; font-weight: 600;
+    transition: background-color 180ms var(--ease-out-expo), color 180ms var(--ease-out-expo);
+  }
+  .nav-cta:hover { background: #ffffff; }
+  /* Light and lime surfaces flip the button and neutralise the blend on the logo */
+  :global([data-mode="claro"]) .nav-cta, :global([data-mode="branco"]) .nav-cta, :global([data-mode="lime"]) .nav-cta {
+    background: #000000; color: #baff00;
+  }
+  :global([data-mode="claro"]) .nav-cta:hover, :global([data-mode="branco"]) .nav-cta:hover, :global([data-mode="lime"]) .nav-cta:hover {
+    background: #383838; color: #ffffff;
+  }
+  :global([data-mode="lime"]) .nav-logo, :global([data-mode="lime"]) .nav-links { mix-blend-mode: normal; color: #000000; }
+</style>
+
+<script>
+  // Shrink on scroll — a class toggle, nothing animates per frame.
+  const nav = document.querySelector<HTMLElement>('[data-nav]');
+  if (nav) {
+    let compact = false;
+    const update = () => {
+      const next = window.scrollY > 48;
+      if (next !== compact) { compact = next; nav.classList.toggle('is-compact', compact); }
+    };
+    update();
+    window.addEventListener('scroll', update, { passive: true });
+  }
+</script>

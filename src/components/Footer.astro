@@ -1,0 +1,45 @@
+---
+import { SITE } from '@/config/site';
+import Simbolo from '@/components/ui/Simbolo.astro';
+const year = new Date().getFullYear();
+const waHref = `https://wa.me/${SITE.whatsapp}`;
+const waPretty = '+55 15 99705-6889';
+---
+<footer class="footer" data-surface="preto">
+  <div class="container footer-inner">
+    <a href="/" class="footer-logo" aria-label="VOLGUS — início">
+      <Simbolo class="footer-simbolo mark-simbolo" />
+      <svg class="footer-wordmark mark-wordmark" viewBox="0 0 246 45" aria-hidden="true" focusable="false"><use href="/brand/wordmark.svg#wordmark" /></svg>
+    </a>
+    <div class="footer-cols">
+      <p class="footer-col">
+        <span>{SITE.city}</span>
+        <a href={`mailto:${SITE.email}`}>{SITE.email}</a>
+        <a href={waHref} rel="noopener">{waPretty}</a>
+      </p>
+      <p class="footer-col">
+        <a href={SITE.instagramMarca} rel="noopener">Instagram {SITE.instagramMarcaHandle}</a>
+        <a href={SITE.instagramPessoal} rel="noopener">Instagram {SITE.instagramPessoalHandle}</a>
+        <a href="/privacidade">Política de privacidade</a>
+      </p>
+    </div>
+    <p class="footer-year t-micro">© {year} VOLGUS</p>
+  </div>
+</footer>
+
+<style>
+  .footer { background: #000000; color: #ffffff; padding-block: 3rem 2.5rem; }
+  .footer-inner { display: grid; grid-template-columns: 1fr; gap: 2.5rem; }
+  .footer-logo { display: flex; align-items: center; gap: 0.5rem; color: #ffffff; }
+  .footer-simbolo { height: 1.75rem; color: #baff00; }
+  .footer-wordmark { height: 0.95rem; }
+  .footer-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
+  .footer-col { display: flex; flex-direction: column; gap: 0.5rem; font-size: 0.9375rem; }
+  .footer-col a { opacity: 0.72; transition: opacity 160ms; }
+  .footer-col a:hover { opacity: 1; }
+  .footer-year { opacity: 0.5; }
+  @media (min-width: 768px) {
+    .footer-inner { grid-template-columns: auto 1fr auto; align-items: start; }
+    .footer-cols { justify-self: end; gap: 4rem; }
+  }
+</style>

@@ -1,0 +1,19 @@
+---
+/**
+ * Section wrapper. Declares its target surface (for the body-color tween and the
+ * no-motion fallback) and prints its number on the ruler, never above the title.
+ */
+interface Props {
+  id: string;
+  surface: 'preto' | 'cinza' | 'claro' | 'branco' | 'lime';
+  num?: string;
+  class?: string;
+  label?: string;
+  bleed?: boolean;
+}
+const { id, surface, num, class: className = '', label, bleed = false } = Astro.props;
+---
+<section id={id} data-surface={surface} class={`secao ${className}`} aria-label={label}>
+  {num && <span class="secao-label" aria-hidden="true">§ {num}</span>}
+  {bleed ? <slot /> : <div class="container"><slot /></div>}
+</section>

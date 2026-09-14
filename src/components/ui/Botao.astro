@@ -1,0 +1,77 @@
+---
+/**
+ * Pill button, drawn after MIV pages 27 and 49: a circle with an arrow at the
+ * left of the label. Never a loose "→" after the text.
+ * - primary: lime pill, black text (on dark); flips to black pill, lime text on light/lime surfaces
+ * - ghost:   1px outline pill in currentColor
+ * - link:    text with a thin underline
+ */
+interface Props {
+  href: string;
+  variant?: 'primary' | 'ghost' | 'link';
+  size?: 'md' | 'lg';
+  micro?: string;
+  class?: string;
+  id?: string;
+}
+const { href, variant = 'primary', size = 'md', micro, class: className = '', id } = Astro.props;
+---
+{variant === 'link' ? (
+  <a href={href} id={id} class={`btn-link ${className}`}><slot /></a>
+) : (
+  <span class={`btn-wrap ${className}`}>
+    <a href={href} id={id} class={`btn btn-${variant} btn-${size}`}>
+      <span class="btn-circle" aria-hidden="true">
+        <svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+      </span>
+      <span class="btn-label"><slot /></span>
+    </a>
+    {micro && <span class="btn-micro t-micro">{micro}</span>}
+  </span>
+)}
+
+<style>
+  .btn-wrap { display: inline-flex; flex-direction: column; align-items: flex-start; gap: 0.75rem; }
+  .btn {
+    --btn-bg: #baff00; --btn-ink: #000000; --btn-circle-bg: #000000; --btn-circle-ink: #baff00;
+    --btn-hover-bg: #ffffff; --btn-hover-ink: #000000;
+    display: inline-flex; align-items: center; gap: 0.875rem;
+    min-height: 3.5rem; padding: 0.5rem 1.75rem 0.5rem 0.5rem;
+    border-radius: 999px;
+    background: var(--btn-bg); color: var(--btn-ink);
+    font-weight: 600; font-size: 1rem; line-height: 1; letter-spacing: -0.005em;
+    transition: background-color 180ms var(--ease-out-expo), color 180ms var(--ease-out-expo);
+    white-space: nowrap;
+  }
+  .btn-lg { min-height: 4rem; padding-right: 2.25rem; font-size: 1.125rem; }
+  .btn-circle {
+    display: grid; place-items: center; width: 2.5rem; height: 2.5rem; border-radius: 50%;
+    background: var(--btn-circle-bg); color: var(--btn-circle-ink);
+    transition: background-color 180ms var(--ease-out-expo), color 180ms var(--ease-out-expo);
+  }
+  .btn-lg .btn-circle { width: 3rem; height: 3rem; }
+  .btn:hover { background: var(--btn-hover-bg); color: var(--btn-hover-ink); }
+  .btn-ghost {
+    --btn-bg: transparent; --btn-ink: currentColor; --btn-circle-bg: transparent; --btn-circle-ink: currentColor;
+    --btn-hover-bg: var(--ink); --btn-hover-ink: var(--surface);
+    box-shadow: inset 0 0 0 1px currentColor;
+  }
+  .btn-ghost .btn-circle { box-shadow: inset 0 0 0 1px currentColor; }
+  /* Light and lime surfaces: black pill, lime text, lime circle */
+  :global([data-mode="claro"]) .btn-primary, :global([data-mode="branco"]) .btn-primary, :global([data-mode="lime"]) .btn-primary,
+  :global(html:not(.motion) [data-surface="claro"]) .btn-primary,
+  :global(html:not(.motion) [data-surface="branco"]) .btn-primary,
+  :global(html:not(.motion) [data-surface="lime"]) .btn-primary {
+    --btn-bg: #000000; --btn-ink: #baff00; --btn-circle-bg: #baff00; --btn-circle-ink: #000000;
+    --btn-hover-bg: #383838; --btn-hover-ink: #ffffff;
+  }
+  .btn-micro { color: var(--ink-2); padding-left: 0.25rem; }
+  .btn-link {
+    display: inline-block; padding-block: 0.25rem;
+    font-weight: 500; color: inherit;
+    background-image: linear-gradient(currentColor, currentColor);
+    background-size: 100% 1px; background-repeat: no-repeat; background-position: 0 100%;
+    transition: background-size 180ms var(--ease-out-expo);
+  }
+  .btn-link:hover { background-size: 0% 1px; background-position: 100% 100%; }
+</style>
