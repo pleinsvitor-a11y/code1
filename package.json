@@ -8,7 +8,9 @@
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
-    "check": "astro check"
+    "check": "astro check",
+    "build:pages": "astro build && node scripts/rebase-paths.mjs /code1 && node scripts/nojekyll.mjs",
+    "build:preview": "astro build && node scripts/rebase-paths.mjs relative"
   },
   "dependencies": {
     "@astrojs/react": "^4.4.2",

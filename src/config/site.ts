@@ -2,9 +2,16 @@
  * Every value the owner may want to change lives here.
  * Nothing below is hardcoded anywhere else in the codebase.
  */
+/**
+ * The public origin the built site will answer on. Defaults to the real domain;
+ * the GitHub Pages preview build overrides it so its canonical and Open Graph
+ * URLs point at where that copy actually lives.
+ */
+const DOMAIN = import.meta.env.PUBLIC_SITE_DOMAIN || 'https://www.volgus.com.br';
+
 export const SITE = {
   name: 'VOLGUS',
-  domain: 'https://www.volgus.com.br',
+  domain: DOMAIN,
   title: 'VOLGUS — Estruturação e gestão comercial para PMEs',
   description:
     'A VOLGUS entra no comercial da sua empresa e constrói a estrutura que faz a venda acontecer sem depender de você. Método, processo e acompanhamento.',

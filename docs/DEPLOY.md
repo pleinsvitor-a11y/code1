@@ -1,52 +1,62 @@
 # Como colocar o site no ar
 
-Este site é uma pasta de arquivos estáticos. Não precisa de servidor Node, banco de dados nem "build na nuvem". Você gera a pasta `dist/` no seu computador e sobe o conteúdo dela para a hospedagem.
+Há três caminhos. O **1** já está pronto e só depende de um clique seu. O **2** é o mais rápido se você já tem hospedagem. O **3** é o destino final, com o volgus.com.br.
 
 ---
 
-## 1. Gerar a pasta `dist/`
+## 1. GitHub Pages — um clique, hospedagem grátis e permanente
 
-Você precisa do Node.js instalado (versão 20 ou mais nova: https://nodejs.org). Depois, na pasta do projeto:
+O site já está publicado no branch `gh-pages` do repositório. Falta só ligar o Pages:
+
+1. Abra https://github.com/pleinsvitor-a11y/code1/settings/pages
+2. Em **Source**, escolha **Deploy from a branch**
+3. Em **Branch**, escolha **gh-pages** e a pasta **/ (root)**
+4. Clique em **Save**
+
+Em 1 a 3 minutos o site fica no ar em:
+
+    https://pleinsvitor-a11y.github.io/code1/
+
+Essa cópia está marcada como `noindex` de propósito: ela não aparece no Google, para não competir com o volgus.com.br quando ele entrar. Serve para você ver, testar e mandar o link para quem quiser.
+
+**Para atualizar essa cópia depois de mudar alguma coisa:**
 
 ```bash
-npm install        # só na primeira vez, baixa as dependências
-npm run build      # gera a pasta dist/
+PUBLIC_SITE_DOMAIN="https://pleinsvitor-a11y.github.io/code1" npm run build:pages
 ```
 
-Para testar localmente antes de subir:
+e suba o conteúdo de `dist/` para o branch `gh-pages`.
+
+---
+
+## 2. Sua hospedagem, por FTP ou painel
+
+Na raiz do projeto existe o arquivo **`volgus-site.zip`**: é o site inteiro, pronto, com os caminhos certos para rodar na raiz de um domínio.
+
+**Por painel (cPanel, Hostinger, Locaweb, HostGator):** entre no "Gerenciador de arquivos", abra a pasta pública (`public_html`, `www` ou `htdocs`), apague o que estiver lá, envie o `volgus-site.zip` e use "Extrair". Confira que o `.htaccess` ficou lá dentro.
+
+**Por FTP (FileZilla):** conecte com host, usuário e senha da hospedagem, abra a pasta pública, apague o conteúdo antigo, e arraste para lá **tudo que está dentro** da pasta `dist/` (não a pasta em si). No FileZilla, marque "Servidor → Forçar exibição de arquivos ocultos" para o `.htaccess` subir junto.
+
+**Sem hospedagem ainda?** Você pode arrastar a pasta `dist/` em https://app.netlify.com/drop e ganhar um endereço no ar na hora, sem criar conta. Depois dá para apontar o domínio por lá.
+
+Para gerar a pasta de novo depois de qualquer mudança:
 
 ```bash
-node scripts/serve.mjs
+npm install     # só na primeira vez
+npm run build   # gera dist/
 ```
 
-e abra `http://localhost:4330` no navegador. Esse comando serve só a pasta `dist/`, exatamente como a hospedagem vai fazer.
+Para conferir antes de subir, rode `node scripts/serve.mjs` e abra `http://localhost:4330`. Esse comando serve só a pasta `dist/`, igual a hospedagem vai fazer.
 
 ---
 
-## 2. Subir por FTP
+## 3. Apontar o volgus.com.br
 
-1. Abra o FileZilla (ou o gerenciador de arquivos do painel da hospedagem).
-2. Conecte com o host, usuário e senha de FTP que a hospedagem te deu.
-3. No lado remoto, entre na pasta pública do site. Os nomes mais comuns são `public_html`, `www` ou `htdocs`.
-4. **Apague o que estiver lá dentro** (normalmente só um `index.html` de "em construção").
-5. Do lado local, abra a pasta `dist/` do projeto, **selecione tudo que está dentro dela** (não a pasta `dist` em si) e arraste para a pasta remota.
-6. Confira que o arquivo `.htaccess` também subiu. Ele começa com ponto e alguns programas escondem arquivos assim: no FileZilla, marque "Servidor → Forçar exibição de arquivos ocultos".
+**Se for usar a sua hospedagem** (caminho 2): na hospedagem, copie os dois servidores DNS (algo como `ns1.hospedagem.com.br`). No Registro.br, entre no domínio, vá em "Alterar servidores DNS" e cole os dois. Leva de 2 a 24 horas.
 
-Pronto. O site abre no seu domínio.
+**Se for usar o GitHub Pages** (caminho 1): em Settings → Pages → Custom domain, escreva `www.volgus.com.br` e salve. No Registro.br, crie um registro **CNAME** de `www` apontando para `pleinsvitor-a11y.github.io`. Marque "Enforce HTTPS" depois que o GitHub validar. **Atenção:** com domínio próprio o site passa a ser servido na raiz, então gere a pasta com `npm run build` (caminho 2), não com `build:pages`, e tire o `noindex` do `scripts/rebase-paths.mjs` do caminho.
 
-**Por painel (cPanel, Hostinger, Locaweb, HostGator):** o caminho é o mesmo. Use o "Gerenciador de arquivos", entre em `public_html`, use "Enviar" e mande o conteúdo de `dist/`. Se o painel aceitar `.zip`, compacte o conteúdo de `dist/` (não a pasta), envie e extraia lá dentro.
-
----
-
-## 3. Apontar o domínio
-
-Se o domínio foi registrado no Registro.br e a hospedagem é outra empresa:
-
-1. Na hospedagem, procure "DNS" ou "Servidores de nome" e copie os dois endereços (ex.: `ns1.hospedagem.com.br` e `ns2.hospedagem.com.br`).
-2. No Registro.br, entre no domínio, vá em "Alterar servidores DNS" e cole os dois endereços.
-3. Espera de 2 a 24 horas para propagar.
-
-Ative o **HTTPS** no painel da hospedagem (quase todas têm "SSL grátis" ou "Let's Encrypt" com um clique). O site precisa abrir em `https://www.volgus.com.br` e `https://volgus.com.br`; peça para a hospedagem redirecionar um para o outro.
+Nos dois casos, ative o **HTTPS** (as hospedagens chamam de "SSL grátis" ou "Let's Encrypt") e peça para `volgus.com.br` redirecionar para `www.volgus.com.br`, ou o contrário.
 
 ---
 
@@ -101,11 +111,12 @@ O site está preparado para um loop curto de 6 segundos, sem áudio, na seção 
 
 | Item | Onde | O que falta |
 |---|---|---|
+| Ligar o Pages | Settings → Pages | O clique da seção 1 (só você tem acesso) |
 | Fotos | `src/assets/photos/` | Colocar os 4 arquivos JPG com os nomes da seção 5 |
 | Vídeo | `public/video/` | Gerar o loop com o script da seção 6 (o código já espera os arquivos; ver `src/components/Ordem.astro`) |
 | Calendly | `src/config/site.ts` → `agendaUrl` | Colar o link quando existir |
 | Fontes oficiais | `public/fonts/` | Só se houver licença web de Roc Grotesk, The Seasons e LTC Francis. Hoje o site usa Bricolage Grotesque, Gloock e Nothing You Could Do (licença aberta, arquivos incluídos) |
-| Hospedagem | `public/.htaccess` | O arquivo é para Apache (padrão nas hospedagens brasileiras). Se a hospedagem for Nginx, peça ao suporte para: página 404 = `/404.html`, e servir `/diagnostico` como `/diagnostico/index.html` |
+| Hospedagem Nginx | `public/.htaccess` | O arquivo é para Apache (padrão nas hospedagens brasileiras). Se for Nginx, peça ao suporte: página 404 = `/404.html`, e servir `/diagnostico` como `/diagnostico/index.html` |
 
 ---
 

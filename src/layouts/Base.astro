@@ -29,8 +29,12 @@ const {
   ogImage = '/og/volgus.png',
   motion = true,
 } = Astro.props;
-const canonical = new URL(Astro.url.pathname, SITE.domain).toString();
-const ogUrl = new URL(ogImage, SITE.domain).toString();
+// SITE.domain may itself carry a path (the GitHub Pages copy lives in a
+// subfolder), so join by concatenation: new URL() would drop that path.
+const origin = SITE.domain.replace(/\/+$/, '');
+const abs = (path: string) => origin + (path.startsWith('/') ? path : `/${path}`);
+const canonical = abs(Astro.url.pathname);
+const ogUrl = abs(ogImage);
 ---
 <!doctype html>
 <html lang="pt-BR" class="no-js">
